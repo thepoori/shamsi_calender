@@ -14,7 +14,7 @@ const char *months[] = {"Farvardin" , "Ordibehesht" ," Khordad" ,"Tir" ,"Mordad"
 	"Esfand"
 };
 int leap_year(int year);
-void print_cal(struct date d , int is_leap);
+void print_cal(struct date d , int is_leap , int weekday);
 struct date convert(struct tm *date , int leap);
 
 
@@ -23,8 +23,9 @@ int main(){
 	struct tm *date;
 	time(& now);
 	date = localtime(&now);
+	int wd = date->tm_wday;
 	struct date dt = convert(date, leap_year(date ->tm_year + 1900));
-	print_cal(dt , leap_year(date ->tm_year + 1900));
+	print_cal(dt , leap_year(date ->tm_year + 1900) , wd);
 	return 0;
 
 }
@@ -65,10 +66,11 @@ struct date convert(struct tm *date, int leap) {
 }
 
 
-void print_cal(struct date d , int is_leap){
+void print_cal(struct date d , int is_leap ,int weekday ){
 	short m_day;
 	char header[200] = "";
-	char week_day = d.day % 7;	
+	
+
 	char add_num[200] = "";
 	sprintf(header , "%10s %i\n%s\n" , months[d.month -1] , d.year , "Su Mo Tu We Th Fr Sa");
 	if (d.month < 6)m_day = 31;
@@ -79,11 +81,11 @@ void print_cal(struct date d , int is_leap){
 		else
 			m_day = 28;
 	}
-	for (int i = 1; i <= (7- week_day); i++) {
-		strcat(header, " " );
+	for (int i = 0; i <= (weekday); i++) {
+		strcat(header, "  " );
 	}
 
-	strcat(header, "  ");
+	strcat(header, " ");
 
 	for(int i =1 ; i <= m_day; i++){
 		if (i == d.day){
@@ -93,7 +95,7 @@ void print_cal(struct date d , int is_leap){
 		}
 		strcat(header , add_num);
 		strcat(header, " ");
-		if ( ((i +(7-week_day)))% 7 == 0)
+		if ( ((i +(weekday + 1)))% 7 == 0)
 			strcat(header,"\n");
 
 	}
