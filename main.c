@@ -25,7 +25,8 @@ int main(){
 	date = localtime(&now);
 	int wd = date->tm_wday;
 	struct date dt = convert(date, leap_year(date ->tm_year + 1900));
-	print_cal(dt , leap_year(date ->tm_year + 1900) , wd);
+	int check = dt.day % 7;
+	print_cal(dt , leap_year(date ->tm_year + 1900) , wd - check);	
 	return 0;
 
 }
@@ -68,7 +69,7 @@ struct date convert(struct tm *date, int leap) {
 
 void print_cal(struct date d , int is_leap ,int weekday ){
 	short m_day;
-	char header[200] = "";
+	char header[500] = "";
 	
 
 	char add_num[200] = "";
