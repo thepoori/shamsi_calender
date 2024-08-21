@@ -23,10 +23,12 @@ int main(){
 	struct tm *date;
 	time(& now);
 	date = localtime(&now);
-	int wd = date->tm_wday;
+	int wd = date->tm_wday + 1;
+	struct date name = {name.year = 1383 , name.month = 12 , name.day = 13};
 	struct date dt = convert(date, leap_year(date ->tm_year + 1900));
-	int check = dt.day % 7;
-	print_cal(dt , leap_year(date ->tm_year + 1900) , wd - check);	
+	
+	int check = dt.day - 1  % 7;
+	print_cal(name , leap_year(date ->tm_year + 1900) , wd - check);	
 	return 0;
 
 }
@@ -70,10 +72,8 @@ struct date convert(struct tm *date, int leap) {
 void print_cal(struct date d , int is_leap ,int weekday ){
 	short m_day;
 	char header[500] = "";
-	
-
 	char add_num[200] = "";
-	sprintf(header , "%10s %i\n%s\n" , months[d.month -1] , d.year , "Su Mo Tu We Th Fr Sa");
+	sprintf(header , "  %10s %i\n%s\n" , months[d.month -1] , d.year , "Su Mo Tu We Th Fr Sa");
 	if (d.month <= 6)m_day = 31;
 	else if (d.month > 6 && d.month < 12) m_day = 30;
 	else {
@@ -86,7 +86,7 @@ void print_cal(struct date d , int is_leap ,int weekday ){
 		strcat(header, "  " );
 	}
 
-	strcat(header, " ");
+	//strcat(header, " ");
 
 	for(int i =1 ; i <= m_day; i++){
 		if (i == d.day){
@@ -96,7 +96,7 @@ void print_cal(struct date d , int is_leap ,int weekday ){
 		}
 		strcat(header , add_num);
 		strcat(header, " ");
-		if ( ((i +(weekday + 1)))% 7 == 0)
+		if ( (i +(weekday -1 ))% 7 == 0)
 			strcat(header,"\n");
 
 	}
