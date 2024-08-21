@@ -44,7 +44,7 @@ int leap_year(int year){
 struct date convert(struct tm *date, int leap) {
 	struct date convert_date;
 	int gregorian_day = date->tm_yday + 1;
-	int persian_day_offset = (leap ? 80 : 79);
+	int persian_day_offset = (leap ? 79 : 80);
 	int day_of_year = gregorian_day - persian_day_offset;
 
 	if (day_of_year >= 0) {
@@ -56,11 +56,11 @@ struct date convert(struct tm *date, int leap) {
 
 	if (day_of_year < 186) {
 		convert_date.month = (day_of_year / 31) + 1;
-		convert_date.day = (day_of_year % 31);
+		convert_date.day = (day_of_year % 31) + 1;
 	} else {
 		day_of_year -= 186;
 		convert_date.month = (day_of_year / 30) + 7;
-		convert_date.day = (day_of_year % 30) ;
+		convert_date.day = (day_of_year % 30) +1 ;
 	}
 
 	return convert_date;
@@ -74,7 +74,7 @@ void print_cal(struct date d , int is_leap ,int weekday ){
 
 	char add_num[200] = "";
 	sprintf(header , "%10s %i\n%s\n" , months[d.month -1] , d.year , "Su Mo Tu We Th Fr Sa");
-	if (d.month < 6)m_day = 31;
+	if (d.month <= 6)m_day = 31;
 	else if (d.month > 6 && d.month < 12) m_day = 30;
 	else {
 		if (is_leap)
