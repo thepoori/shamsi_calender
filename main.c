@@ -24,11 +24,10 @@ int main(){
 	time(& now);
 	date = localtime(&now);
 	int wd = date->tm_wday + 1;
-	struct date name = {name.year = 1383 , name.month = 12 , name.day = 13};
 	struct date dt = convert(date, leap_year(date ->tm_year + 1900));
 	
 	int check = dt.day - 1  % 7;
-	print_cal(name , leap_year(date ->tm_year + 1900) , wd - check);	
+	print_cal(dt, leap_year(date ->tm_year + 1900) , wd - check);	
 	return 0;
 
 }
